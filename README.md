@@ -15,11 +15,11 @@ Para hacer este tutorial se necesita un ambiente de Python con DVC y las librer�
     conda activate demo
     pip install -r requirements.txt
 
-Si ya tiene un ambiente y sólo necesita DVC, puede instalarlo con:
+Si ya tiene un ambiente y sólo necesita DVC y MLEM, puede instalarlos con:
 
-    pip install dvc[gdrive]
+    pip install dvc[gdrive] mlem[fastapi]
 
-Por simpleza del tutorial se utilizará *google drive* como servidor de almacenamiento remoto.
+Por simpleza del tutorial se utilizará *google drive* como servidor de almacenamiento remoto para DVC.
 
 **Nota**: Para otras opciones de servidores remotos vea aquí: https://dvc.org/doc/install/linux#install-with-pip, por ejemplo Amazon S3, Microsoft Azure o un equipo personal que se accede por SSH. Si no está seguro sobre cual remoto utilizar puede instalarlos todos con: `pip install dvc[all]`
 
@@ -149,3 +149,12 @@ Opcionalmente también podemos administrar los experimentos encolados con los co
 **Importante** Los experimentos no se versionan por defecto ya que no están pensados para ser permanentes. Si queremos actualizar nuestro *workspace* con un experimento en particular se utiliza `dvc exp apply` con la ID del experimento. También podemos crear una rama permanente para un experimento con `dvc exp branch`. Finalmente podemos limpiar los experimentos con `dvc exp gc`. 
 
 **Nota:** Si necesitamos respaldar o compartir experimentos (resultados intermedios) existe `dvc exp pull/push`.
+
+
+## Deploy del modelo con [MLEM](https://mlem.ai/doc)
+
+El script `src/train.py` guarda el modelo y su metadata en formato compatible con MLEM. Podemos levantar una API para ofrecer predicciones del modelo con :
+
+    mlem serve fastapi --model models/dt_model
+
+Lo anterior levanta una API local. También se puede usar docker, Heroku o Kubernetes para poner modelos en producción.
